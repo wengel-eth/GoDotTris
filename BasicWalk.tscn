@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://KinematicBody2D.gd" type="Script" id=1]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 8, 8 )
+
+[sub_resource type="ImageTexture" id=2]
+flags = 23
+storage = 2
+flags = 23
+size = Vector2( 16, 16 )
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Main_Camera" type="Camera2D" parent="."]
+current = true
+
+[node name="Player_Body" type="KinematicBody2D" parent="."]
+script = ExtResource( 1 )
+
+[node name="Player_Collider" type="CollisionShape2D" parent="Player_Body"]
+shape = SubResource( 1 )
+
+[node name="Player_Sprite" type="Sprite" parent="Player_Body"]
+texture = SubResource( 2 )
