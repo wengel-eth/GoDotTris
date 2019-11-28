@@ -3,7 +3,6 @@
 [ext_resource path="res://Scripts/player_kinematic.gd" type="Script" id=1]
 [ext_resource path="res://Sprites/icon.png" type="Texture" id=2]
 
-
 [sub_resource type="ImageTexture" id=1]
 flags = 23
 storage = 2
