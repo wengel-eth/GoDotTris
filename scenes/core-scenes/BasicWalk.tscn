@@ -1,18 +1,19 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://KinematicBody2D.gd" type="Script" id=1]
-[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://Scripts/player_kinematic.gd" type="Script" id=1]
+[ext_resource path="res://Sprites/icon.png" type="Texture" id=2]
 
-[sub_resource type="ImageTexture" id=2]
+
+[sub_resource type="ImageTexture" id=1]
 flags = 23
 storage = 2
 flags = 23
 size = Vector2( 16, 16 )
 
-[sub_resource type="RectangleShape2D" id=1]
+[sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 8, 8 )
 
-[sub_resource type="RectangleShape2D" id=4]
+[sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 32.0193, 31.9812 )
 
 [node name="Node2D" type="Node2D"]
@@ -26,10 +27,10 @@ script = ExtResource( 1 )
 speed = 150
 
 [node name="Player_Sprite" type="Sprite" parent="Player_Body"]
-texture = SubResource( 2 )
+texture = SubResource( 1 )
 
 [node name="Player_Collider" type="CollisionShape2D" parent="Player_Body"]
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 position = Vector2( -93.4286, 34.0152 )
@@ -38,4 +39,4 @@ position = Vector2( -93.4286, 34.0152 )
 texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-shape = SubResource( 4 )
+shape = SubResource( 3 )
