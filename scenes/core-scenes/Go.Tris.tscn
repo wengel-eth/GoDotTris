@@ -1,11 +1,19 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Scripts/current_piece.gd" type="Script" id=1]
+
+[sub_resource type="ImageTexture" id=1]
+size = Vector2( 32, 32 )
 
 [node name="Node2D" type="Node2D"]
 
 [node name="MainCamera" type="Camera2D" parent="."]
+editor/display_folded = true
 current = true
+
+[node name="Sprite" type="Sprite" parent="MainCamera"]
+scale = Vector2( 34, 20 )
+texture = SubResource( 1 )
 
 [node name="CurrentPiece" type="Node" parent="."]
 script = ExtResource( 1 )

@@ -10,15 +10,19 @@ region = Rect2( 64, 0, 32, 32 )
 
 [node name="Block 1" type="Sprite" parent="."]
 texture = SubResource( 1 )
+offset = Vector2( -16, 16 )
 
 [node name="Block 2" type="Sprite" parent="."]
 position = Vector2( 32, -32 )
 texture = SubResource( 1 )
+offset = Vector2( -16, 16 )
 
 [node name="Block 3" type="Sprite" parent="."]
 position = Vector2( 0, -32 )
 texture = SubResource( 1 )
+offset = Vector2( -16, 16 )
 
 [node name="Block 4" type="Sprite" parent="."]
 position = Vector2( 32, 0 )
 texture = SubResource( 1 )
+offset = Vector2( -16, 16 )
