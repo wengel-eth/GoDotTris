@@ -24,6 +24,9 @@ var pieceZ = load("res://scenes/sub-scenes/Z-Piece.tscn").instance()
 var pieceI = load("res://scenes/sub-scenes/I-Piece.tscn").instance()
 var pieceO = load("res://scenes/sub-scenes/O-Piece.tscn").instance()
 
+onready var grid = get_node(NodePath("../suroundUI"))
+var currentPiece = null
+
 var pieceArray = [pieceT, pieceL, pieceJ, pieceS, pieceZ, pieceI, pieceO]
 var pieceIndex = null
 var pieceRotation = 0
@@ -46,6 +49,20 @@ func blop():
 	var ib = round(rand_range(0, 6))
 	return ib
 
+# creates a random piece at the start
+func spawnPiece():
+	pieceIndex = blop()
+	add_child(pieceArray[pieceIndex].duplicate())
+	currentPiece = get_child(0)
+	if pieceIndex != 5 and pieceIndex != 6:
+		currentPiece.global_translate(Vector2(16, 16))
+
+# reparent a node to another node
+func reparent(source, target):
+	remove_child(source)
+	target.add_child(source)
+	source.set_owner(target)
+
 ## FUNCTIONS ##
 ###############
 
@@ -53,9 +70,10 @@ func blop():
 ## MAIN LOOP ##
 
 func _enter_tree():
-	# creates a random piece at the start
-	pieceIndex = blop()
-	add_child(pieceArray[pieceIndex].duplicate())
+	pass
+
+func _ready():
+	spawnPiece()
 
 func _exit_tree():
 	pass
@@ -70,12 +88,12 @@ func _physics_process(delta):
 	else:
 		# checks if left button is pressed, moves piece left and continues if still pressed
 		if Input.is_action_just_pressed("move_left"):
-			get_child(0).global_translate(Vector2(-32, 0))
+			currentPiece.global_translate(Vector2(-32, 0))
 			leftPressed = true
 		if Input.is_action_pressed("move_left") and leftPressed:
 			if leftPressedTicker == pressedTickerMax:
 				if pressedTickerInterval == pressedTickerIntervalMax:
-					get_child(0).global_translate(Vector2(-32, 0))
+					currentPiece.global_translate(Vector2(-32, 0))
 					pressedTickerInterval = 0
 				else:
 					pressedTickerInterval += 1
@@ -88,12 +106,12 @@ func _physics_process(delta):
 		
 		# checks if right button is pressed, moves piece right and continues if still pressed
 		if Input.is_action_just_pressed("move_right"):
-			get_child(0).global_translate(Vector2(32, 0))
+			currentPiece.global_translate(Vector2(32, 0))
 			rightPressed = true
 		if Input.is_action_pressed("move_right") and rightPressed:
 			if rightPressedTicker == pressedTickerMax:
 				if pressedTickerInterval == pressedTickerIntervalMax:
-					get_child(0).global_translate(Vector2(32, 0))
+					currentPiece.global_translate(Vector2(32, 0))
 					pressedTickerInterval = 0
 				else:
 					pressedTickerInterval += 1
@@ -116,11 +134,15 @@ func _physics_process(delta):
 		if Input.is_action_just_pressed("rotate_right"):
 			pieceRotation += 90
 		
-		get_child(0).set_global_rotation(deg2rad(pieceRotation))
+		currentPiece.set_global_rotation(deg2rad(pieceRotation))
+	
+	if Input.is_action_just_pressed("hard_drop"):
+		reparent(currentPiece, grid)
+		spawnPiece()
 	
 	timer += speed
 	if timer == (interval * tick):
-		get_child(0).global_translate(Vector2(0, 32))
+		currentPiece.global_translate(Vector2(0, 32))
 		timer = 0
 
 ## MAIN LOOP ##
