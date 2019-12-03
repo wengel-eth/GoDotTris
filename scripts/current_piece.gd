@@ -35,9 +35,10 @@ var unit = 32
 var currentPiece = null
 var frameOffset = Vector2()
 var reverseOffset = Vector2()
-var frameCollision = false
-var tempCollide = false
+var leftCollision = false
+var rightCollision = false
 var floorCollision = false
+var tempCollide = false
 var hardCollision = false
 var floorTimer = 0
 var floorTimerMax = 60
@@ -109,12 +110,12 @@ func _process(delta):
 	else:
 		# checks if left button is pressed, moves piece left and continues if still pressed
 		if Input.is_action_just_pressed("move_left"):
-			frameOffset += Vector2(unit*-1, 0)
+			frameOffset -= Vector2(unit, 0)
 			leftPressed = true
 		if Input.is_action_pressed("move_left") and leftPressed:
 			if leftPressedTicker == pressedTickerMax:
 				if pressedTickerInterval == pressedTickerIntervalMax:
-					frameOffset += Vector2(unit*-1, 0)
+					frameOffset -= Vector2(unit, 0)
 					pressedTickerInterval = 0
 				else:
 					pressedTickerInterval += 1
@@ -170,10 +171,28 @@ func _process(delta):
 	currentPiece.set_global_rotation(deg2rad(pieceRotation))
 	frameOffset = Vector2()
 	
+	# checks for collision and moves piece back
+	for c in range(currentPiece.get_child_count()):
+		if currentPiece.get_child(c).overlaps_area(leftWall):
+			leftCollision = true
+		if currentPiece.get_child(c).overlaps_area(rightWall):
+			rightCollision = true
+	if tempCollide:
+		leftCollision = false
+		rightCollision = false
+		tempCollide = false
+	if leftCollision:
+		reverseOffset += Vector2(unit, 0)
+		tempCollide = true
+	if rightCollision:
+		reverseOffset -= Vector2(unit, 0)
+		tempCollide = true
+	
 	# collision moves back
 	currentPiece.global_translate(reverseOffset)
 	reverseOffset = Vector2()
-	frameCollision = false
+	leftCollision = false
+	rightCollision = false
 	
 	
 
