@@ -139,7 +139,7 @@ func _process(delta):
 					pressedTickerInterval += 1
 			else:
 				rightPressedTicker += 1
-		if Input.is_action_just_released("move_left"):
+		if Input.is_action_just_released("move_right"):
 			rightPressed = false
 			rightPressedTicker = 0
 			pressedTickerInterval = 0
@@ -170,31 +170,6 @@ func _process(delta):
 	currentPiece.global_translate(frameOffset)
 	currentPiece.set_global_rotation(deg2rad(pieceRotation))
 	frameOffset = Vector2()
-	
-	# checks for collision and moves piece back
-	for c in range(currentPiece.get_child_count()):
-		if currentPiece.get_child(c).overlaps_area(leftWall):
-			leftCollision = true
-		if currentPiece.get_child(c).overlaps_area(rightWall):
-			rightCollision = true
-	if tempCollide:
-		leftCollision = false
-		rightCollision = false
-		tempCollide = false
-	if leftCollision:
-		reverseOffset += Vector2(unit, 0)
-		tempCollide = true
-	if rightCollision:
-		reverseOffset -= Vector2(unit, 0)
-		tempCollide = true
-	
-	# collision moves back
-	currentPiece.global_translate(reverseOffset)
-	reverseOffset = Vector2()
-	leftCollision = false
-	rightCollision = false
-	
-	
 
 ## MAIN LOOP ##
 ###############
