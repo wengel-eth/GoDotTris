@@ -31,8 +31,8 @@ onready var rightWall = get_node(NodePath("../surroundArea/rightWall"))
 onready var topWall = get_node(NodePath("../surroundArea/topWall"))
 onready var bottomWall = get_node(NodePath("../surroundArea/bottomWall"))
 
-var unit = 32
 var currentPiece = null
+var unit = 32
 var frameOffset = Vector2()
 var reverseOffset = Vector2()
 var leftCollision = false
@@ -94,6 +94,10 @@ func placePiece():
 	currentPiece.queue_free()
 	spawnPiece()
 
+# collision function called when there's a collision
+func _on_pieceArea_collision():
+	print("RECIEVED")
+
 ## FUNCTIONS ##
 ###############
 
@@ -104,6 +108,7 @@ func _ready():
 	spawnPiece()
 
 func _process(delta):
+	print("-start")
 	# checks if both keys are pressed and exits if they are
 	if Input.is_action_pressed("move_left") and Input.is_action_pressed("move_right"):
 		pass
@@ -112,6 +117,7 @@ func _process(delta):
 		if Input.is_action_just_pressed("move_left"):
 			frameOffset -= Vector2(unit, 0)
 			leftPressed = true
+			#print("LEFT PRESSED")
 		if Input.is_action_pressed("move_left") and leftPressed:
 			if leftPressedTicker == pressedTickerMax:
 				if pressedTickerInterval == pressedTickerIntervalMax:
@@ -130,6 +136,7 @@ func _process(delta):
 		if Input.is_action_just_pressed("move_right"):
 			frameOffset += Vector2(unit, 0)
 			rightPressed = true
+			#print("RIGHT PRESSED")
 		if Input.is_action_pressed("move_right") and rightPressed:
 			if rightPressedTicker == pressedTickerMax:
 				if pressedTickerInterval == pressedTickerIntervalMax:
@@ -159,7 +166,8 @@ func _process(delta):
 	# checks if space is pressed, and does a hard drop if so
 	if Input.is_action_just_pressed("hard_drop"):
 		placePiece()
-	
+
+func _physics_process(delta):
 	# gradual moving down
 	timer += speed
 	if timer >= (interval * tick):
@@ -167,9 +175,12 @@ func _process(delta):
 		timer = 0
 	
 	# moves current piece
-	currentPiece.global_translate(frameOffset)
-	currentPiece.set_global_rotation(deg2rad(pieceRotation))
+	currentPiece.translate(frameOffset)
+	currentPiece.set_rotation(deg2rad(pieceRotation))
+	
 	frameOffset = Vector2()
+	print("-end")
 
 ## MAIN LOOP ##
 ###############
+
