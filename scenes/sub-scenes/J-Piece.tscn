@@ -7,7 +7,7 @@
 atlas = ExtResource( 2 )
 region = Rect2( 96, 0, 32, 32 )
 
-[node name="J-Piece" type="Area2D"]
+[node name="J-Piece" type="KinematicBody2D"]
 
 [node name="Block 1" type="CollisionShape2D" parent="."]
 editor/display_folded = true

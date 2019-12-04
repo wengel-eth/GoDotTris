@@ -25,7 +25,7 @@ var pieceI = load("res://scenes/sub-scenes/I-Piece.tscn").instance()
 var pieceO = load("res://scenes/sub-scenes/O-Piece.tscn").instance()
 
 onready var grid = get_node(NodePath("../surroundArea/surroundUI"))
-onready var area = get_node(NodePath("../surroundArea/pieceArea"))
+onready var pieceArea = get_node(NodePath("../surroundArea/pieceArea"))
 onready var leftWall = get_node(NodePath("../surroundArea/leftWall"))
 onready var rightWall = get_node(NodePath("../surroundArea/rightWall"))
 onready var topWall = get_node(NodePath("../surroundArea/topWall"))
@@ -85,18 +85,14 @@ func reparent(parent, source, target):
 func cement(piece):
 	for x in range(piece.get_child_count()):
 		piece.get_child(0).set_position(piece.get_child(0).get_global_position())
-		reparent(piece, piece.get_child(0), area)
+		reparent(piece, piece.get_child(0), pieceArea)
 
 # all the previous functions put together to submit the piece
 func placePiece():
-	reparent(self, currentPiece, area)
+	reparent(self, currentPiece, pieceArea)
 	cement(currentPiece)
 	currentPiece.queue_free()
 	spawnPiece()
-
-# collision function called when there's a collision
-func _on_pieceArea_collision():
-	print("RECIEVED")
 
 ## FUNCTIONS ##
 ###############
@@ -108,7 +104,6 @@ func _ready():
 	spawnPiece()
 
 func _process(delta):
-	print("-start")
 	# checks if both keys are pressed and exits if they are
 	if Input.is_action_pressed("move_left") and Input.is_action_pressed("move_right"):
 		pass
@@ -165,6 +160,7 @@ func _process(delta):
 	
 	# checks if space is pressed, and does a hard drop if so
 	if Input.is_action_just_pressed("hard_drop"):
+		currentPiece.move_and_collide(Vector2(0, unit*24))
 		placePiece()
 
 func _physics_process(delta):
@@ -175,12 +171,13 @@ func _physics_process(delta):
 		timer = 0
 	
 	# moves current piece
-	currentPiece.translate(frameOffset)
+	currentPiece.move_and_collide(frameOffset)
 	currentPiece.set_rotation(deg2rad(pieceRotation))
 	
 	frameOffset = Vector2()
-	print("-end")
 
 ## MAIN LOOP ##
 ###############
+
+
 
